@@ -4,18 +4,23 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { CreateLinkService } from '../services/create-link.service';
 import { QueryLinkService } from '../services/query-link.service';
 import ApiError from '@/common/error/entities/api-error.entity';
 import { PaginationDto } from '@/common/dtos/pagination.dto';
+import { Request } from 'express';
+import { User } from '@/modules/user/user.entity';
 
 @Controller('link')
 export class LinkController {
+  logger = new Logger(LinkController.name);
   constructor(
     private readonly createLinkService: CreateLinkService,
     private readonly queryLinkService: QueryLinkService,
@@ -23,7 +28,8 @@ export class LinkController {
 
   @Post('/create')
   @UseGuards(JwtAuthGuard)
-  async createLink(@Body() { url }: { url: string }) {
+  async createLink(@Req() req: Request, @Body() { url }: { url: string }) {
+    const user = req.user as User;
     const alreadyExists = await this.queryLinkService.findOne({
       key: 'url',
       value: url,
@@ -31,6 +37,9 @@ export class LinkController {
     if (alreadyExists)
       throw new ApiError('link-already exists', 'Link já existe', 400);
     const link = await this.createLinkService.create({ url });
+    this.logger.log(
+      `Link ${link.id} created with url ${link.url} by user ${user.id}`,
+    );
     return { ok: true, link };
   }
 
@@ -55,8 +64,11 @@ export class LinkController {
 
   @Delete('/delete/:linkId')
   @UseGuards(JwtAuthGuard)
-  async deleteLink(@Param('linkId') linkId: string) {
+  async deleteLink(@Req() req: Request, @Param('linkId') linkId: string) {
+    const user = req.user as User;
     await this.createLinkService.delete(linkId);
+
+    this.logger.log(`Link ${linkId} deleted by user ${user.id}`);
     return { ok: true };
   }
 }
