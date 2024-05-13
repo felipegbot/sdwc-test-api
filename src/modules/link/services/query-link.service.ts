@@ -13,7 +13,7 @@ export class QueryLinkService {
   }
 
   async list(
-    options: ListLinkOptions,
+    options?: ListLinkOptions,
   ): Promise<{ count: number; links: Link[] }> {
     return await this.linkRepository.list(options);
   }

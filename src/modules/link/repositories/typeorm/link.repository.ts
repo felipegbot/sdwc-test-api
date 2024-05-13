@@ -35,12 +35,12 @@ export class TypeormLinkRepository implements LinkRepository {
   ): Promise<{ count: number; links: Link[] }> {
     const { page, per_page } = options;
     const qb = this.linkRepository.createQueryBuilder('link');
-    if (options.relations)
+    if (options?.relations)
       options.relations.forEach((relation) => {
         qb.leftJoinAndSelect(`link.${relation}`, relation);
       });
 
-    if (options.where) {
+    if (options?.where) {
       options.where.forEach((where) => {
         qb.where(`link.${where.key} = :value`, { value: where.value });
       });

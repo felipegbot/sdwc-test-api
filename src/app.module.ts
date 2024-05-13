@@ -4,7 +4,8 @@ import { config } from 'dotenv';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { LinkModule } from './modules/links/link.module';
+import { LinkModule } from './modules/link/link.module';
+import { VisitModule } from './modules/visit/visit.module';
 config();
 
 @Module({
@@ -34,6 +35,7 @@ config();
     UserModule,
 
     LinkModule,
+    VisitModule,
   ],
 })
 export class AppModule {}
