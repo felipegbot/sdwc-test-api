@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { LinkModule } from './modules/links/link.module';
 config();
 
 @Module({
@@ -18,7 +19,7 @@ config();
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      synchronize: true,
+      synchronize: process.env.MODE === 'dev' ? true : false,
       cache: {
         type: 'redis',
         options: {
@@ -31,6 +32,8 @@ config();
     }),
     AuthModule,
     UserModule,
+
+    LinkModule,
   ],
 })
 export class AppModule {}

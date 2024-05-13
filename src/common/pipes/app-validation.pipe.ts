@@ -9,8 +9,8 @@ export class AppValidationPipe extends ValidationPipe {
     super({
       whitelist: true,
       stopAtFirstError: true,
+      forbidNonWhitelisted: true,
       exceptionFactory: (rawErrors) => {
-        console.dir(rawErrors, { depth: null });
         const contexts = rawErrors.map((error) => {
           if (error.constraints?.whitelistValidation !== undefined) {
             return [
