@@ -16,8 +16,9 @@ export class TypeormVisitRepository implements VisitRepository {
   async generateData(allLinksIds: string[]): Promise<void> {
     await this.visitRepository.clear();
     const visitsToCreate: Visit[] = [];
+
     const initialDate = moment();
-    const endDate = initialDate.subtract(30, 'days').toDate();
+    const endDate = moment().subtract(30, 'days');
 
     for (let i = initialDate; i.isAfter(endDate); i.subtract(1, 'days')) {
       allLinksIds.forEach((linkId) => {
@@ -28,6 +29,7 @@ export class TypeormVisitRepository implements VisitRepository {
         visitsToCreate.push(visit);
       });
     }
+    console.log(visitsToCreate.length);
 
     await this.visitRepository.save(visitsToCreate);
   }
@@ -44,6 +46,8 @@ export class TypeormVisitRepository implements VisitRepository {
     if (options.end_date)
       qb.andWhere('visit.date <= :end_date', { end_date: options.end_date });
 
+    qb.leftJoinAndSelect('visit.link', 'link');
+
     const [visits, count] = await qb.getManyAndCount();
     return { count, visits };
   }
@@ -55,6 +59,8 @@ export class TypeormVisitRepository implements VisitRepository {
 
   async getVisitsByLinkIds(linkIds: string[]): Promise<Visit[]> {
     const qb = this.visitRepository.createQueryBuilder('visit');
+
+    qb.leftJoinAndSelect('visit.link', 'link');
     qb.whereInIds(linkIds);
     const visits = await qb.getMany();
     return visits;
@@ -65,6 +71,8 @@ export class TypeormVisitRepository implements VisitRepository {
     qb.where('visit.date >= :start_date', { start_date: interval.start_date });
     qb.andWhere('visit.date <= :end_date', { end_date: interval.end_date });
     qb.orderBy('visit.clicks', 'DESC');
+    qb.leftJoinAndSelect('visit.link', 'link');
+
     qb.limit(5);
     const visits = await qb.getMany();
     return visits;

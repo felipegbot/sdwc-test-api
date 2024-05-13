@@ -16,7 +16,7 @@ export const formatVisits = (visits: Visit[]): FormattedVisit[] => {
       alreadyIn.clicks = [
         ...alreadyIn.clicks,
         {
-          link,
+          link: link.url,
           visits,
         },
       ];
@@ -27,7 +27,7 @@ export const formatVisits = (visits: Visit[]): FormattedVisit[] => {
         count: visits,
         clicks: [
           {
-            link,
+            link: link.url,
             visits,
           },
         ],

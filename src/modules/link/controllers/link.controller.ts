@@ -30,16 +30,16 @@ export class LinkController {
     });
     if (alreadyExists)
       throw new ApiError('link-already exists', 'Link já existe', 400);
-    const link = this.createLinkService.create({ url });
-
+    const link = await this.createLinkService.create({ url });
     return { ok: true, link };
   }
 
   @Get('/list')
   @UseGuards(JwtAuthGuard)
   async listLinks(@Query() query: PaginationDto) {
-    const links = await this.queryLinkService.list({ ...query });
-    return { ok: true, links };
+    const { links, count } = await this.queryLinkService.list({ ...query });
+
+    return { ok: true, count, links };
   }
 
   @Get('/find/:linkId')
@@ -49,6 +49,7 @@ export class LinkController {
       key: 'id',
       value: linkId,
     });
+    if (!link) throw new ApiError('link-not-found', 'Link não encontrado', 404);
     return { ok: true, link };
   }
 

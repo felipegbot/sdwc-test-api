@@ -16,7 +16,8 @@ export class TypeormLinkRepository implements LinkRepository {
   async create(data: { url: string }): Promise<Link> {
     const link = new Link();
     link.url = data.url;
-    return await this.linkRepository.save(link);
+    const linkDb = await this.linkRepository.save(link);
+    return linkDb;
   }
 
   async findOne(options: FindOneLinkOptions): Promise<Link | undefined> {
@@ -33,7 +34,7 @@ export class TypeormLinkRepository implements LinkRepository {
   async list(
     options: ListLinkOptions,
   ): Promise<{ count: number; links: Link[] }> {
-    const { page, per_page } = options;
+    const { page = null, per_page = null } = options;
     const qb = this.linkRepository.createQueryBuilder('link');
     if (options?.relations)
       options.relations.forEach((relation) => {
@@ -47,7 +48,7 @@ export class TypeormLinkRepository implements LinkRepository {
     }
 
     if (page && per_page) {
-      qb.skip(page * per_page);
+      qb.skip((page - 1) * per_page);
       qb.take(per_page);
     }
 
