@@ -23,7 +23,7 @@ export class Visit {
   @Column({ default: 0 })
   clicks: number;
 
-  @ManyToOne(() => Link, (link) => link.id)
+  @ManyToOne(() => Link, (link) => link.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'link_id' })
   link: Link;
 }

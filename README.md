@@ -1,73 +1,72 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Documentação da Aplicação sdwc-test-api
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Informações do projeto
+Esta aplicação foi desenvolvida entre os dias 13 de maio de 2024 e 14 de maio de 2024, ela é destinada ao Teste Técnico proposto pela empresa  [SDWC](https://sdwc.me) (Sanduíche) para a vaga de Desenvolvedor Fullstack Pleno
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Objetivo do sistema
+De acordo com o teste técnico: 
+> Desenvolver um painel analytics que contabilize acessos de usuários e cliques nos
+links de uma página web. A aplicação deve consistir em um frontend para a página
+web e uma API em Node.js. A API será responsável por fornecer dados de acesso
+diários, e a interface web exibirá um gráfico com o total de acessos por dia e uma
+tabela com os links mais acessados nos últimos 7 dias.
 
-## Description
+Este objetivo foi atingido.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Tecnologias utilizadas
+- A aplicação foi criada usando o framework [NestJs](https://nestjs.com)
+- Para o sistema de autentição foram utilizadas as libs bcrypt e passport-js, o modelo de autenticação escolhido foi o JWT (Json Web Token)
+- Para os dados do tipo Date foi utilizado a lib moment-timezone para garantir a conversão correta dos dados
+- Foi utilizado o TypeOrm como ORM.
+- O SGBD escolhido foi o PostgresSql
+- Para sistema de cache foi utilizado o Redis
 
-## Installation
+### Estrutura do projeto
+- O projeto está dividido em módulos devido majoritariamente à arquitetura do NestJs, cada módulo por sua vez está divido em subpastas que separam as funcionalidades de cada arquivo do projeto, por ex: dtos/, controllers/, services/, interfaces/, etc.
+- O projeto não faz uso de nenhum tipo de teste até o momento.
 
-```bash
-$ yarn install
+
+### Informações adicionais
+- Para a aplicação funcionar apropriadamente, é necessário estar autenticado, ter links cadastrados no banco e fazer ao menos 1 requisição para o endpoint `/visits/generate-data` utilizando o método `POST`. Com isso as informações serão geradas e a aplicação passará a retornar dados.
+
+---
+
+# Servindo a Aplicação sdwc-test-api
+
+Este tópico fornece instruções sobre como servir a aplicação sdwc-test-api.
+
+### Pré-requisitos
+
+Antes de começar, certifique-se de ter o seguinte:
+
+- Node.js instalado na sua máquina.
+- yarn ou npm instalado na sua máquina.
+
+### Servindo em modo de desenvolvimento
+
+Para servir a aplicação em modo de desenvolvimento, siga estas etapas:
+
+1. Certifique-se de ter um banco de dados PostgreSQL em execução.
+
+2. Certifique-se de ter uma instância Redis em execução.
+
+3. Você precisará preencher as seguintes variáveis de ambiente em um arquivo `.env`:
+
+   - `DB_HOST`: O endereço do banco de dados PostgreSQL.
+   - `DB_PORT`: A porta do banco de dados PostgreSQL.
+   - `DB_USERNAME`: O nome de usuário do banco de dados PostgreSQL.
+   - `DB_PASSWORD`: A senha do banco de dados PostgreSQL.
+   - `DB_DATABASE`: O nome do banco de dados PostgreSQL a ser utilizado.
+   - `REDIS_URL`: O endereço da instância do Redis.
+   - `REDIS_PORT`: Porta da instância do Redis.
+   - `JWT_SECRET`: Uma chave secreta para assinar e verificar tokens JWT.
+   - `PORT`: A porta na qual o servidor será executado.
+   - `MODE`: define como a aplicação sera executada, por ora apenas o valor `dev` é utilizado.
+
+4. Execute o seguinte comando para iniciar a aplicação em modo de desenvolvimento:
+
+```
+yarn start:dev
 ```
 
-## Running the app
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Com essas instruções, você deverá ser capaz de servir a aplicação sdwc-test-api em modo de desenvolvimento.

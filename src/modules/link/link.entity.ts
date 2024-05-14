@@ -15,7 +15,10 @@ export class Link {
   @Column({ unique: true })
   url: string;
 
-  @OneToMany(() => Visit, (visit) => visit.link)
+  @OneToMany(() => Visit, (visit) => visit.link, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
   visits: Visit[];
 
   @CreateDateColumn({ select: false })
