@@ -63,10 +63,16 @@ Para servir a aplicação em modo de desenvolvimento, siga estas etapas:
    - `PORT`: A porta na qual o servidor será executado.
    - `MODE`: define como a aplicação sera executada, por ora apenas o valor `dev` é utilizado.
 
-4. Execute o seguinte comando para iniciar a aplicação em modo de desenvolvimento:
+4. Instale as dependências usando `npm i` ou `yarn`
+
+5. Execute o seguinte comando para iniciar a aplicação em modo de desenvolvimento:
 
 ```
 yarn start:dev
+```
+ou
+```
+npm run start:dev
 ```
 
 Com essas instruções, você deverá ser capaz de servir a aplicação sdwc-test-api em modo de desenvolvimento.
